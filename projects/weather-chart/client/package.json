@@ -1,0 +1,16 @@
+{
+  "name": "weather-client",
+  "version": "1.0.0",
+  "description": "The front end for a weather app whose data comes from a Raspberry Pi",
+  "main": "index.js",
+  "scripts": {
+    "dev":"vite",
+    "build":"vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tim Smith",
+  "license": "ISC",
+  "dependencies": {
+    "vite": "^6.0.3"
+  }
+}

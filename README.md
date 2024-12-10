@@ -1,1 +1,25 @@
-# python-demos
+# Raspberry Pi Demos
+
+Almost all the demos in this repo require a Raspberry Pi with a SenseHat.
+
+A lot of the basic demos are based off of the [Raspberry Pi Sense Hat demos](https://projects.raspberrypi.org/en/projects/getting-started-with-the-sense-hat).
+
+## Basic Demos
+
+These demos are a good hands on way to play around with some python code and immediatly see results using the LED matrix on the SenseHat.
+
+- 01 Hello world
+- 02 Hello Tim
+- 03 Colour Sensor
+- 04 Matrix Control with Joystick
+- 05 Pressure reading
+- 06 Humidity reading
+- 07 Temperature reading
+- 08 Blink random colours
+- 09 Blink RAINBOW colours!
+
+## Projects
+
+- Weather Chart
+- Footfall
+- Ideal temp for the ISS (from their demos)
