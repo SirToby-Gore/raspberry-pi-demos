@@ -1,5 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import Chart from "chart.js/auto";
+let interval;
+let myChart;
+const timer = document.getElementById('timer');
+const timerInital = 60;
+let remainingTime = timerInital;
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 
@@ -16,6 +21,7 @@ async function fetchData() {
 
   return data;
 }
+
 
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
@@ -56,7 +62,7 @@ async function drawChart() {
 
 
   const ctx = document.getElementById('chart').getContext('2d');
-  new Chart(ctx, {
+  myChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: timestamps,
@@ -143,7 +149,37 @@ async function drawChart() {
       }
     },
   });
-
 }
 
-document.addEventListener('DOMContentLoaded', drawChart);
+drawChart()
+// // get new data every 60 seconds
+// setInterval(() => {
+//   if (myChart) {
+//     myChart.destroy();
+//     drawChart()
+//   } else {
+//     drawChart()
+//   }
+// }, 60000);
+
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(remainingTime / 60);
+  const seconds = remainingTime % 60;
+  timer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+interval = setInterval(() => {
+  if (remainingTime <= 0) {
+    myChart.destroy()
+    drawChart()
+    remainingTime = timerInital;
+    updateTimerDisplay()
+  } else {
+    remainingTime -= 1;
+    updateTimerDisplay();
+  }
+}, 1000);
+
+// Initial display update
+updateTimerDisplay();

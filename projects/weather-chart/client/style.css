@@ -26,8 +26,10 @@ h1 {
   padding: 2rem;
 }
 
-#data-notice {
+.notice-wrap {
   background-color: #F7F7F7;
   border-radius: 15px;
   padding: 2rem;
+  text-align: center;
+  color: #2C3E50;
 }
