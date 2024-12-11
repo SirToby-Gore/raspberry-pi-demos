@@ -20,6 +20,6 @@ These demos are a good hands on way to play around with some python code and imm
 
 ## Projects
 
-- Weather Chart
+- [Weather Chart](/projects/weather-chart/)
 - Footfall
 - Ideal temp for the ISS (from their demos)
