@@ -20,6 +20,15 @@ These demos are a good hands on way to play around with some python code and imm
 
 ## Projects
 
-- [Weather Chart](/projects/weather-chart/)
-- Footfall
-- Ideal temp for the ISS (from their demos)
+### Weather Chart
+- [project Code](/projects/weather-chart/)
+- [Demo](https://pi-weather.wollivan.dev/)
+
+
+### Footfall
+
+### Ideal temp for the ISS
+
+This is a demo from the Raspberry Pi demos on using the SenseHat
+
+- [Project Code](/projects/iss-conditions/)
