@@ -3,6 +3,7 @@ import Chart from "chart.js/auto";
 let interval;
 let myChart;
 const timer = document.getElementById('timer');
+const timerWrap = document.getElementById('timer-wrap');
 const timerInital = 60;
 let remainingTime = timerInital;
 
@@ -44,6 +45,9 @@ function updateNotice(timestamp) {
   if (diffInSeconds > 60) {
     notice.textContent = `Data is not being collected. Last reading ${formatTimestamp(lastReading)}.`;
     notice.style.color = "red";
+    clearInterval(interval)
+    timerWrap.innerHTML = ""
+
   } else {
     notice.textContent = "Data is being collected.";
     notice.style.color = "green";
@@ -106,10 +110,10 @@ async function drawChart() {
       },
       stacked: false,
       plugins: {
-        title: {
-          display: true,
-          text: 'Weather Data'
-        },
+        // title: {
+        //   display: true,
+        //   text: 'Weather Data'
+        // },
         legend: {
           fontColor: "red"
         }

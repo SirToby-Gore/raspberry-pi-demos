@@ -10,16 +10,21 @@
 </head>
 
 <body>
-  <h1>Raspberry Pi Weather Station</h1>
-  <p>This data is collected using a Raspberry Pi with a SenseHat, sent to a PostgreSQL database and displayed using
-    ChartJS.</p>
-  <div class="chart-container">
-    <canvas id="chart"></canvas>
-  </div>
-  <div class="notice-wrap">
-    <p id="data-notice"></p>
-    <p>Updating in: <span id="timer"></span></p>
-  </div>
+  <header>
+    <h1>Raspberry Pi Weather Station</h1>
+  </header>
+  <main>
+    <p>This data is collected using a Raspberry Pi with a SenseHat, sent to a PostgreSQL database and displayed using
+      ChartJS.</p>
+    <p>When the Pi is on, data will be collected every 60 seconds, and this chart will automatically update.</p>
+    <div class="chart-container">
+      <canvas id="chart"></canvas>
+    </div>
+    <div class="notice-wrap">
+      <p id="data-notice"></p>
+      <p id="timer-wrap">Updating in: <span id="timer"></span></p>
+    </div>
+  </main>
 </body>
 
 </html>
