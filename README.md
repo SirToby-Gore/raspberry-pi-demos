@@ -21,7 +21,7 @@ These demos are a good hands on way to play around with some python code and imm
 ## Projects
 
 ### Weather Chart
-- [project Code](/projects/weather-chart/)
+- [Project Code](/projects/weather-chart/)
 - [Demo](https://pi-weather.wollivan.dev/)
 
 
