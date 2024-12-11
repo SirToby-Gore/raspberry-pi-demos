@@ -5,14 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather Data Visualization</title>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link rel="stylesheet" href="./style.css">
   <script type="module" src="./app.js"></script>
 </head>
 
 <body>
-  <h1>Weather Data Visualization</h1>
-  <canvas id="weatherChart" width="800" height="400"></canvas>
+  <h1>Weather Data</h1>
+  <div class="chart-container">
+    <canvas id="chart"></canvas>
+  </div>
   <p id="data-notice"></p>
 </body>
 

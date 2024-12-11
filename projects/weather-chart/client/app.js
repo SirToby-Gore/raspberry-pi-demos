@@ -1,11 +1,13 @@
-const supabase = supabase.createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+import { createClient } from "@supabase/supabase-js";
+import Chart from "chart.js/auto";
+
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 
 async function fetchData() {
-  // Fetch data from the SensorReadings table
   const { data, error } = await supabase
-    .from('SensorReadings')
-    .select('temperature, pressure, humidity, timestamp')
-    .order('timestamp', { ascending: true });
+    .from('readings')
+    .select('temperature, pressure, humidity, created_at')
+    .order('created_at', { ascending: true });
 
   if (error) {
     console.error("Error fetching data:", error);
@@ -15,14 +17,26 @@ async function fetchData() {
   return data;
 }
 
-function updateNotice(lastTimestamp) {
+function formatTimestamp(timestamp) {
+  const date = new Date(timestamp);
+
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // months are 0 indexed for some dumb reason
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
+function updateNotice(timestamp) {
   const notice = document.getElementById("data-notice");
-  const lastTime = new Date(lastTimestamp);
+  const lastReading = new Date(timestamp);
   const now = new Date();
-  const diffInSeconds = (now - lastTime) / 1000;
+  const diffInSeconds = (now - lastReading) / 1000;
 
   if (diffInSeconds > 60) {
-    notice.textContent = "Data is not being collected (last entry over 60 seconds ago).";
+    notice.textContent = `Data is not being collected. Last reading ${formatTimestamp(lastReading)}.`;
     notice.style.color = "red";
   } else {
     notice.textContent = "Data is being collected.";
@@ -33,60 +47,103 @@ function updateNotice(lastTimestamp) {
 async function drawChart() {
   const data = await fetchData();
 
-  const timestamps = data.map(entry => entry.timestamp);
-  const temperatures = data.map(entry => entry.temperature);
-  const pressures = data.map(entry => entry.pressure);
-  const humidities = data.map(entry => entry.humidity);
+  const temperatureData = data.map(reading => reading.temperature);
+  const pressureData = data.map(reading => reading.pressure);
+  const humidityData = data.map(reading => reading.humidity);
+  const timestamps = data.map(reading => formatTimestamp(reading.created_at));
 
   updateNotice(timestamps[timestamps.length - 1]);
 
-  const ctx = document.getElementById('weatherChart').getContext('2d');
+
+  const ctx = document.getElementById('chart').getContext('2d');
   new Chart(ctx, {
     type: 'line',
     data: {
       labels: timestamps,
+
+
       datasets: [
         {
           label: 'Temperature (°C)',
-          data: temperatures,
-          borderColor: 'red',
-          fill: false
+          data: temperatureData,
+          borderColor: '#FF5733',
+          fill: true,
+          backgroundColor: "rgb(255, 87, 51, 0.2)",
+          yAxisID: 'yl',
+          tension: 0.1
         },
         {
           label: 'Pressure (hPa)',
-          data: pressures,
-          borderColor: 'blue',
-          fill: false
+          data: pressureData,
+          borderColor: '#4A90E2',
+          fill: true,
+          backgroundColor: 'rgb(74, 144, 226, 0.2)',
+          yAxisID: 'yr',
+          tension: 0.1
         },
         {
           label: 'Humidity (%)',
-          data: humidities,
-          borderColor: 'green',
-          fill: false
+          data: humidityData,
+          borderColor: '#00A884',
+          fill: true,
+          backgroundColor: "rgb(0, 168, 132, 0.2)",
+          yAxisID: 'yl',
+          tension: 0.1
         }
       ]
     },
     options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      stacked: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Weather Data'
+        },
+        legend: {
+          fontColor: "red"
+        }
+      },
       scales: {
         x: {
-          type: 'time',
-          time: {
-            unit: 'minute'
+          ticks: {
+            display: false
           },
           title: {
             display: true,
-            text: 'Time'
+            text: 'Time',
+            color: "#2C3E50"
           }
         },
-        y: {
-          title: {
-            display: true,
-            text: 'Values'
+        // 2 axis because temp and humidity are 0-50ish, pressure is ~1000
+        yl: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          ticks: {
+            color: "#2C3E50"
           }
-        }
+        },
+        yr: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          ticks: {
+            color: "#2C3E50"
+          },
+          // so grid lines show for one axis not both (or it looks funky)
+          grid: {
+            drawOnChartArea: false,
+          },
+        },
       }
-    }
+    },
   });
+
 }
 
 document.addEventListener('DOMContentLoaded', drawChart);

@@ -4,13 +4,16 @@
   "description": "The front end for a weather app whose data comes from a Raspberry Pi",
   "main": "index.js",
   "scripts": {
-    "dev":"vite",
-    "build":"vite build",
+    "dev": "vite",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Tim Smith",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.47.5",
+    "chart.js": "^4.4.7",
     "vite": "^6.0.3"
-  }
+  },
+  "type": "module"
 }

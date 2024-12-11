@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rem;
+  color: #F7F7F7;
+  background-color: #2C3E50;
+}
+
+h1 {
+  text-align: center;
+}
+
+.chart-container {
+  width: 90vw;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  background-color: #F7F7F7;
+  border-radius: 15px;
+  padding: 2rem;
+}
+
+#data-notice {
+  background-color: #F7F7F7;
+  border-radius: 15px;
+  padding: 2rem;
+}
