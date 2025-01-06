@@ -3,9 +3,6 @@ import os
 from supabase import create_client
 from sense_hat import SenseHat
 from time import sleep
-from dotenv import load_dotenv
-
-load_dotenv()
 
 sense = SenseHat()
 
@@ -13,8 +10,6 @@ url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_ANON_KEY")
 
 supabase = create_client(url, key)
-
-
 
 # gather data every 60 seconds
 while True:
