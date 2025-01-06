@@ -24,8 +24,8 @@ You will need a virtual environment to install your python packages (supabase, s
 
 - Make sure you have python3 installed `sudo apt update` then `sudo apt upgrade` then `sudo apt install python3`
 
-`sudo apt-get install sense-hat`
-`pip install supabase --break-system-packages` - this looks scary, but really, for those familiar with `dangerouslySetHTML`, its about as bad as that.
+- `sudo apt-get install sense-hat`
+- `pip install supabase --break-system-packages` - this looks scary, but really, for those familiar with `dangerouslySetHTML`, its about as bad as that.
 
 #### Environment
 
