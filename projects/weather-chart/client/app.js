@@ -2,40 +2,46 @@ import { createClient } from "@supabase/supabase-js";
 import Chart from "chart.js/auto";
 let interval;
 let myChart;
-const timer = document.getElementById('timer');
-const timerWrap = document.getElementById('timer-wrap');
+const timer = document.getElementById("timer");
+const timerWrap = document.getElementById("timer-wrap");
 const timerInital = 60;
 let remainingTime = timerInital;
 
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
+// set up our supabase client, so we can get data from our tables
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
+// get the readings data from Supabase
 async function fetchData() {
   const { data, error } = await supabase
-    .from('readings')
-    .select('temperature, pressure, humidity, created_at')
-    .order('created_at', { ascending: true });
+    .from("readings")
+    .select("temperature, pressure, humidity, created_at")
+    .order("created_at", { ascending: true });
 
   if (error) {
     console.error("Error fetching data:", error);
     return [];
   }
-
+  console.log(data);
   return data;
 }
 
-
+// love me some dates in JavaScript... /s
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
 
   const year = date.getUTCFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // months are 0 indexed for some dumb reason
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const hours = String(date.getUTCHours()).padStart(2, '0');
-  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // months are 0 indexed for some dumb reason
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
 
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
+// this tells the user if data is actively being collected, or if they Pi is off
 function updateNotice(timestamp) {
   const notice = document.getElementById("data-notice");
   const lastReading = new Date(timestamp);
@@ -43,11 +49,12 @@ function updateNotice(timestamp) {
   const diffInSeconds = (now - lastReading) / 1000;
 
   if (diffInSeconds > 60) {
-    notice.textContent = `Data is not being collected. Last reading ${formatTimestamp(lastReading)}.`;
+    notice.textContent = `Data is not being collected. Last reading ${formatTimestamp(
+      lastReading
+    )}.`;
     notice.style.color = "red";
-    clearInterval(interval)
-    timerWrap.innerHTML = ""
-
+    clearInterval(interval);
+    timerWrap.innerHTML = "";
   } else {
     notice.textContent = "Data is being collected.";
     notice.style.color = "green";
@@ -55,130 +62,124 @@ function updateNotice(timestamp) {
 }
 
 async function drawChart() {
+  // mmm, data...
   const data = await fetchData();
 
-  const temperatureData = data.map(reading => reading.temperature);
-  const pressureData = data.map(reading => reading.pressure);
-  const humidityData = data.map(reading => reading.humidity);
-  const timestamps = data.map(reading => formatTimestamp(reading.created_at));
+  // create an array for each of our data types
+  const temperatureData = data.map((reading) => reading.temperature);
+  const pressureData = data.map((reading) => reading.pressure);
+  const humidityData = data.map((reading) => reading.humidity);
+  const timestamps = data.map((reading) => formatTimestamp(reading.created_at));
 
   updateNotice(timestamps[timestamps.length - 1]);
 
-
-  const ctx = document.getElementById('chart').getContext('2d');
+  // make a sweet looking chart with out sweet looking data!
+  const ctx = document.getElementById("chart").getContext("2d");
   myChart = new Chart(ctx, {
-    type: 'line',
+    type: "line",
     data: {
       labels: timestamps,
 
-
       datasets: [
         {
-          label: 'Temperature (°C)',
+          label: "Temperature (°C)",
           data: temperatureData,
-          borderColor: '#FF5733',
+          borderColor: "#FF5733",
           fill: true,
           backgroundColor: "rgb(255, 87, 51, 0.2)",
-          yAxisID: 'yl',
-          tension: 0.1
+          yAxisID: "yl",
+          tension: 0.1,
         },
         {
-          label: 'Pressure (hPa)',
+          label: "Pressure (hPa)",
           data: pressureData,
-          borderColor: '#4A90E2',
+          borderColor: "#4A90E2",
           fill: true,
-          backgroundColor: 'rgb(74, 144, 226, 0.2)',
-          yAxisID: 'yr',
-          tension: 0.1
+          backgroundColor: "rgb(74, 144, 226, 0.2)",
+          yAxisID: "yr",
+          tension: 0.1,
         },
         {
-          label: 'Humidity (%)',
+          label: "Humidity (%)",
           data: humidityData,
-          borderColor: '#00A884',
+          borderColor: "#00A884",
           fill: true,
           backgroundColor: "rgb(0, 168, 132, 0.2)",
-          yAxisID: 'yl',
-          tension: 0.1
-        }
-      ]
+          yAxisID: "yl",
+          tension: 0.1,
+        },
+      ],
     },
     options: {
       responsive: true,
       interaction: {
-        mode: 'index',
+        mode: "index",
         intersect: false,
       },
       stacked: false,
       plugins: {
+        // commented out because I don't want it, left here so you can see how to do it if YOU want it
         // title: {
         //   display: true,
         //   text: 'Weather Data'
         // },
         legend: {
-          fontColor: "red"
-        }
+          fontColor: "red",
+        },
       },
       scales: {
         x: {
           ticks: {
-            display: false
+            display: false,
           },
           title: {
             display: true,
-            text: 'Time',
-            color: "#2C3E50"
-          }
+            text: "Time",
+            color: "#2C3E50",
+          },
         },
         // 2 axis because temp and humidity are 0-50ish, pressure is ~1000
         yl: {
-          type: 'linear',
+          type: "linear",
           display: true,
-          position: 'left',
+          position: "left",
           ticks: {
-            color: "#2C3E50"
-          }
+            color: "#2C3E50",
+          },
         },
         yr: {
-          type: 'linear',
+          type: "linear",
           display: true,
-          position: 'right',
+          position: "right",
           ticks: {
-            color: "#2C3E50"
+            color: "#2C3E50",
           },
           // so grid lines show for one axis not both (or it looks funky)
           grid: {
             drawOnChartArea: false,
           },
         },
-      }
+      },
     },
   });
 }
 
-drawChart()
-// // get new data every 60 seconds
-// setInterval(() => {
-//   if (myChart) {
-//     myChart.destroy();
-//     drawChart()
-//   } else {
-//     drawChart()
-//   }
-// }, 60000);
-
-
 function updateTimerDisplay() {
   const minutes = Math.floor(remainingTime / 60);
   const seconds = remainingTime % 60;
-  timer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  timer.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
+// initial chart creation
+drawChart();
+
+// update every 60 seconds
 interval = setInterval(() => {
   if (remainingTime <= 0) {
-    myChart.destroy()
-    drawChart()
+    myChart.destroy();
+    drawChart();
     remainingTime = timerInital;
-    updateTimerDisplay()
+    updateTimerDisplay();
   } else {
     remainingTime -= 1;
     updateTimerDisplay();
