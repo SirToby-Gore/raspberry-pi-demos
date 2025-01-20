@@ -1,5 +1,9 @@
 # Raspberry Pi Demos
 
+This is a non-offcial branch of the project written by me Toby Gore.
+
+I have seen a handful of typos and smaller improvements to the software that some may find handy too.
+
 Almost all the demos in this repo require a Raspberry Pi with a SenseHat.
 
 A lot of the basic demos are based off of the [Raspberry Pi Sense Hat demos](https://projects.raspberrypi.org/en/projects/getting-started-with-the-sense-hat).
