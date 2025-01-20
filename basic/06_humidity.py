@@ -1,8 +1,8 @@
 # imports
 from sense_hat import SenseHat
 
-# instansiate our sense hat object
-sense = SenseHat()
+# instantiate our sense hat object
+sense: SenseHat = SenseHat()
 
-humidity = sense.get_humidity()
+humidity: int | any = sense.get_humidity()
 sense.show_message(str(humidity))

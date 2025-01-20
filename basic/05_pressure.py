@@ -1,8 +1,8 @@
 # imports
 from sense_hat import SenseHat
 
-# instansiate our sense hat object
-sense = SenseHat()
+# instantiate our sense hat object
+sense: SenseHat = SenseHat()
 
-pressure = sense.get_pressure()
+pressure: int | any = sense.get_pressure()
 sense.show_message(str(pressure))

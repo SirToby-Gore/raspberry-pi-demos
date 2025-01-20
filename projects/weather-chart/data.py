@@ -4,7 +4,7 @@ from supabase import create_client
 from sense_hat import SenseHat
 from time import sleep
 
-sense = SenseHat()
+sense: SenseHat = SenseHat()
 
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
