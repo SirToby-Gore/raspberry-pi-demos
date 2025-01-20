@@ -1,6 +1,6 @@
 # Raspberry Pi Demos
 
-This is a non-offcial branch of the project written by me Toby Gore.
+This is a non-official branch of the project written by me Toby Gore.
 
 I have seen a handful of typos and smaller improvements to the software that some may find handy too.
 
@@ -10,7 +10,7 @@ A lot of the basic demos are based off of the [Raspberry Pi Sense Hat demos](htt
 
 ## Basic Demos
 
-These demos are a good hands on way to play around with some python code and immediatly see results using the LED matrix on the SenseHat.
+These demos are a good hands on way to play around with some python code and immediately see results using the LED matrix on the SenseHat.
 
 - 01 Hello world
 - 02 Hello Tim
